@@ -1,6 +1,7 @@
 <?php
 class PostsController extends AppController {
 	public $helpers = array('Html', 'Form', 'Session');
+
     public $components = array('Session');
 
 	public function index(){
@@ -22,6 +23,7 @@ class PostsController extends AppController {
             }
         }
     }
+
     public function edit($id = null) {
 	    $this->Post->id = $id;
 	    if ($this->request->is('get')) {
@@ -33,6 +35,16 @@ class PostsController extends AppController {
 	        } else {
 	            $this->Session->setFlash('Unable to update your post.');
 	        }
+	    }
+	}
+
+	public function delete($id) {
+	    if ($this->request->is('get')) {
+	        throw new MethodNotAllowedException();
+	    }
+	    if ($this->Post->delete($id)) {
+	        $this->Session->setFlash('The post with id ' . $id . ' has been deleted.');
+	        $this->redirect(array('action' => 'index'));
 	    }
 	}
 }
