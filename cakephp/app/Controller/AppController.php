@@ -36,9 +36,20 @@ class AppController extends Controller {
         'Session',
         'Auth' => array(
             'loginRedirect' => array('controller' => 'posts', 'action' => 'index'),
-            'logoutRedirect' => array('controller' => 'pages', 'action' => 'display', 'home')
+            'logoutRedirect' => array('controller' => 'pages', 'action' => 'display', 'home'),
+            'authorize' => array('Controller')
         )
     );
+
+    public function isAuthorized($user) {
+    // Admin can access every action
+    if (isset($user['role']) && $user['role'] === 'admin') {
+        return true;
+    }
+
+    // Default deny
+    return false;
+}
 
     public function beforeFilter() {
         $this->Auth->allow('index', 'view');
